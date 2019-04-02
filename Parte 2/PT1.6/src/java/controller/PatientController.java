@@ -59,6 +59,9 @@ public class PatientController extends HttpServlet {
                 case "Add Patient":
                     addPatient(response, request);
                     break;
+                case "Export to pdf":
+                    CreatePDF.run(); 
+                    break;
                 default:
                     response.sendRedirect("patientController?action=indexar");
                     break;
@@ -154,14 +157,18 @@ public class PatientController extends HttpServlet {
 
         String classificacio = request.getParameter("classificacio");
         String menopausia = request.getParameter("Menopausia");
+        if(menopausia==null){
+            menopausia="";
+        }
         String tipusMenopausia = request.getParameter("tipusMenopausia");
-
+        /*
         Patient filt_patient = new Patient();
         filt_patient.setClassificacio(classificacio);
         filt_patient.setMenopausia(menopausia);
         filt_patient.setTipusMenopausia(tipusMenopausia);
+        */
 
-        result = pdao.filterPatient(filt_patient);
+        result = pdao.filterPatient(classificacio,menopausia,tipusMenopausia);
 
         request.setAttribute("result_filt", result);
         RequestDispatcher rd = request.getRequestDispatcher("filter_pac.jsp");

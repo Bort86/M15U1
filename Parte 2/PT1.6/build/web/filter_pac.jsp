@@ -33,7 +33,7 @@
                         <label class="col-sm-2 control-label" for="formGroup">Classification: </label>
                         <div class="col-sm-2">
                             <select class="form-control" name="classificacio" >
-                                <option value=''>--</option>
+                                <option value='' selected>--</option>
                                 <option value='OSTEOPONIA'>Osteoponia</option>
                                 <option value='NORMAL'>Normal</option>
                                 <option value='OSTEOPOROSI'>Osteoporosi</option>
@@ -55,7 +55,7 @@
                         <label class="col-sm-2 control-label" for="formGroup">Menopause Type: </label>
                         <div class="col-sm-2">
                             <select class="form-control" name="tipusMenopausia" >
-                                <option value=''>-</option>
+                                <option value='' selected>-</option>
                                 <option value='NO CONSTA'>no consta</option>
                                 <option value='NATURAL'>natural</option>
                                 <option value='OVARIECTOMIA'>ovariectomia</option>
@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <div class="col-sm-2"></div>
                     <input class="col-sm-2" type="submit" name="action" value="Filtrar"/>
-                    <input class="col-sm-2" type="submit" name="action" value="Export to pdf"/><% CreatePDF.run(); %>
+                    <input class="col-sm-2" type="submit" name="action" value="Export to pdf"/>
                 </div>
             </div>
         </form>

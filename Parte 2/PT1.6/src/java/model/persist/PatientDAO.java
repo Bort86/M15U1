@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 
@@ -79,18 +80,37 @@ public class PatientDAO {
      * @param filt_patient
      * @return a set of patients with the selected attributes
      */
-    public Collection<Patient> filterPatient(Patient filt_patient) {
+    public Collection<Patient> filterPatient(String classificacio, String menopausia,
+            String tipusMenopausia) {
         Collection<Patient> result = new ArrayList<>();
         
         
-        try ( Connection conn = dataSource.getConnection();
-              PreparedStatement st = conn.prepareStatement(getQuery("FIND")); )
-        {
-            st.setString(1, filt_patient.getClassificacio());
-            st.setString(2, filt_patient.getMenopausia());
-            st.setString(3, filt_patient.getTipusMenopausia());
+        try 
+        {   
+            Connection conn = dataSource.getConnection();
+            Statement stmt = null;
             
-            ResultSet res = st.executeQuery();
+            HashMap<String,String> valors = new HashMap<String,String>();
+            valors.put("classificació", classificacio);
+            valors.put("menopausia", menopausia);
+            valors.put("tipusMenopausia", tipusMenopausia);
+            
+            String final_query = new String();
+            
+            for (String valor: valors.keySet()){
+                if (!valors.get(valor).isEmpty()){
+                    if (final_query.isEmpty()){
+                        final_query = valor + " = '" + valors.get(valor) + "'";
+                    } else {
+                        final_query += " AND " + valor + " = '" + valors.get(valor)  + "'";
+                    }
+                }
+            }
+            String query = "SELECT * FROM osteoporosi WHERE " + final_query;
+            queries.setProperty("FIND", query);
+            stmt = conn.createStatement();
+
+            ResultSet res = stmt.executeQuery(query);
             while(res.next()){
                 Patient patient = new Patient();
                 patient.setIdRegistre(res.getInt("idRegistre"));
